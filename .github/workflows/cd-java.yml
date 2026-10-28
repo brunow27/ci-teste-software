@@ -1,0 +1,25 @@
+name: CD Java - Release
+
+# Entrega continua simples: ao criar uma tag como v0.1.0, gera o .jar e publica um release.
+on:
+  push:
+    tags: ['v*']
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write   # necessario para criar o release
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: maven
+      # o projeto nao tem classe main do Spring Boot, entao pulamos o repackage
+      - run: mvn -B package -Dspring-boot.repackage.skip=true
+      - name: Criar release com o artefato
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" target/*.jar --generate-notes
