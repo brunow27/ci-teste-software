@@ -12,7 +12,7 @@ jobs:
       contents: write   # necessario para criar o release
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@v6
         with:
           distribution: 'temurin'
           java-version: '17'
