@@ -1,10 +1,12 @@
 name: CI Java - Teste de Software
 
-# push so na master + qualquer pull request (evita execucao duplicada em branch com PR aberto)
+# push so em main/master + qualquer pull request (evita execucao duplicada em branch com PR aberto)
+# workflow_dispatch permite repetir execucoes pela aba Actions, sem novo commit (util para medir tempo)
 on:
   push:
-    branches: [master]
+    branches: [main, master]
   pull_request:
+  workflow_dispatch:
 
 jobs:
   build:
